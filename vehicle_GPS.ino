@@ -23,7 +23,7 @@ SoftwareSerial ss(TxPin, RxPin);
 
 // pin declaration for NodeMCU
 //const int TxNode = 5, RxNode = 6;
-//
+
 //SoftwareSerial esp(TxNode, RxNode);
 
 void setup() {
@@ -44,7 +44,6 @@ void setup() {
   // for NodeMCU baudrate
   //esp.begin(115200);
 
-  //
 
   Serial.println("Searching the signal");
 }
@@ -60,22 +59,27 @@ void loop() {
 
     if (gps.location.isUpdated()) {
 
-      latitude  = gps.location.lat(), 6;
-      longitude = gps.location.lng(), 6;
-      Serial.print("Latitude: ");
-      Serial.print(gps.location.lat(), 7);
+      latitude  = gps.location.lat(), 7;
+      longitude = gps.location.lng(), 7;
 
+      //      latitude and longitude display in serial monitor
+      Serial.print("Latitude: ");
+      Serial.print(latitude);
+
+      Serial.print("  Longitude: ");
+      Serial.println(longitude);
+
+      // shows latitude and longitude in I2C lcd
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("lat : ");
       lcd.print(latitude);
-      
+
       lcd.setCursor(0, 1);
       lcd.print("lon : ");
       lcd.print(longitude);
 
-      Serial.print("  Longitude: ");
-      Serial.println(gps.location.lng(), 7);
+
     }
     // Serial.write(gpsData);
 
