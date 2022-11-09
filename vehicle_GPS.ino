@@ -1,6 +1,12 @@
+
 // import libraries
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
+
+// i2c lcd, SDA = A4, SCL = A5;
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // pin declaration
 const int RxPin = 7, TxPin = 8;
@@ -8,22 +14,37 @@ const int RxPin = 7, TxPin = 8;
 // create TinyGPS object
 TinyGPSPlus gps;
 
+
+// store latitude and longitude
+double latitude;
+double longitude;
 // establish for serial communication with GPS module
 SoftwareSerial ss(TxPin, RxPin);
 
 // pin declaration for NodeMCU
-const int TxNode = 5, RxNode = 6;
-
-SoftwareSerial esp(TxNode, RxNode);
+//const int TxNode = 5, RxNode = 6;
+//
+//SoftwareSerial esp(TxNode, RxNode);
 
 void setup() {
   //   for arduino baudrate
   Serial.begin(9600);
 
-// for NodeMCU baudrate 
-esp.begin(115200);
-  //  for GPS baudrate
+  // for GPS baudrate
   ss.begin(9600);
+
+  //  for lcd
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  lcd.cursor();
+  lcd.print("Connecting...");
+  lcd.blink();
+
+  // for NodeMCU baudrate
+  //esp.begin(115200);
+
+  //
 
   Serial.println("Searching the signal");
 }
@@ -38,8 +59,20 @@ void loop() {
     gps.encode(gpsData);
 
     if (gps.location.isUpdated()) {
+
+      latitude  = gps.location.lat(), 6;
+      longitude = gps.location.lng(), 6;
       Serial.print("Latitude: ");
       Serial.print(gps.location.lat(), 7);
+
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("lat : ");
+      lcd.print(latitude);
+      
+      lcd.setCursor(0, 1);
+      lcd.print("lon : ");
+      lcd.print(longitude);
 
       Serial.print("  Longitude: ");
       Serial.println(gps.location.lng(), 7);
