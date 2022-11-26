@@ -1,21 +1,32 @@
+// import libraries
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 #include <ESP8266WiFi.h>
 
+// create object of TinyGPS++
 TinyGPSPlus gps;
-SoftwareSerial SerialGPS(4, 5);
+
+// serial communication Tx=D2=4=SDA , Rx=D1=5=SCL
+SoftwareSerial SerialGPS(4, 5);  // Tx, Rx
+
 
 const char* ssid     = "SS_wlink";
 const char* password = "@74jApAn#64!";
 
-String status;
+// declaration variables for GPS details
 
+String status;
 float Latitude , Longitude, speedVeh;
 int year , month , date, hour , minute , second;
 String DateString , TimeString , LatitudeString , LongitudeString, SpeedString, notAvailable;
-bool show;
+bool show = false;
+int waitTime = 3000;
 
+ 
+
+// web server port
 WiFiServer server(80);
+
 void setup()
 {
   Serial.begin(9600);
@@ -40,14 +51,15 @@ void setup()
 
 void loop()
 {
-  show = false;
 
-//  if gps is detected 
+
+  //  if gps is detected
   while (SerialGPS.available() > 0) {
 
 
     if (gps.encode(SerialGPS.read()))
     {
+      show = false;
       //  get latitude, longitude and speed
       getVehLocation();
 
@@ -57,8 +69,16 @@ void loop()
       // invoke the function to get time of the vehicle
       getVehTime();
 
-
     }
+  }
+
+  //  if gps is not detected then again try to connect 
+
+  if (millis() > waitTime && gps.charsProcessed() < 10) {
+    Serial.println("No GPS detected");
+    show = true;
+    notAvailable = "<h3><br>Sorry, GPS signal is not found</h3>";
+    while (true);
   }
 
   WiFiClient client = server.available();
@@ -157,8 +177,8 @@ void getVehLocation() {
     speedVeh = gps.speed.kmph();
     SpeedString = String(speedVeh);
   }
-  else {
-    show = true;
-    notAvailable = "<h3><br>Sorry, GPS signal is not found</h3>";
-  }
+  //  else {
+  //    show = true;
+  //    notAvailable = "<h3><br>Sorry, GPS signal is not found</h3>";
+  //  }
 }
