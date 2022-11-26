@@ -33,6 +33,7 @@ void setup()
 
   server.begin();
   Serial.println("Server started");
+  // IP address of Node MCU
   Serial.println(WiFi.localIP());
 }
 
@@ -123,7 +124,7 @@ void loop()
   //Response and show in local host
   String gui = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'> <meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Vehicle GPS Tracking System</title><link rel='icon' type='image/x-icon' href='https://cdn-icons-png.flaticon.com/512/3927/3927464.png'><!-- CSS only --><link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'> <style>* {color: white;}h1,h3 {text-align: center;}body {background-color: rgb(57, 43, 43);}ul {list-style-type: none;} </style></head><body> <div class='containter'> <h1>Vehicle GPS Tracking System </h1> <br><div class='text-center'><img class='img-fluid' style='width: 40%;'src='https://www.istartek.com/wp-content/uploads/2019/06/img_2019-06-04_04-09-49.jpg' alt=''></div>  <br>  <div class='table-responsive'><table class='table table-stripped'><thead class='table-dark'><th>S.N</th><th>Vehicle Name</th><th>Status</th><th>Latitude</th> <th>Longitude</th><th>Speed</th><th>Date</th><th>Time</th><th>Google Map</th> </thead><tbody><tr><td>1</td><td>Veh-A</td><td>";
   gui += status + "</td><td>" + LatitudeString + "</td> <td>" + LongitudeString + "</td><td>" + SpeedString + "</td><td>" + DateString + "</td><td>" + TimeString;
-  gui += "</td><td><a href='http://maps.google.com/maps?&z=15&mrt=yp&t=k&q=" + LatitudeString + "+" + LongitudeString + "'' target=''_top''>Find Me</a></td></tr><tr><td>2</td><td>Veh-B</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr></tbody></table></div><br> <h3> Note: Click on <b>'Find Me'</b> to view in Google Map</h3></div><br>";
+  gui += "</td><td><a href='http://maps.google.com/maps?&z=15&mrt=yp&t=k&q=" + LatitudeString + "+" + LongitudeString + "'' target=''_top''>Find Me</a></td></tr><tr><td>2</td><td>Veh-B</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr><tr><td>3</td><td>Veh-C</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr><tr><td>4</td><td>Veh-D</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr><tr><td>5</td><td>Veh-E</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr><tr><td>6</td><td>Veh-F</td><td>Off</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr></tbody></table></div><br> <h3> Note: Click on <b>'Find Me'</b> to view in Google Map</h3></div><br>";
 
   if(show){
     gui += notAvailable;
